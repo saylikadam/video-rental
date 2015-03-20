@@ -3,7 +3,7 @@ package com.twu.refactor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer {
+public class Customer implements Billable {
 
     private String name;
     private ArrayList<Rental> rentalList = new ArrayList<Rental>();
@@ -22,7 +22,7 @@ public class Customer {
     public double calculateTotal(){
         double totalAmount = 0;
         for(Rental rental : rentalList){
-            totalAmount += rental.getAmount();
+            totalAmount += rental.getTotalAmount();
         }
         return totalAmount;
     }
@@ -37,27 +37,11 @@ public class Customer {
 
     String getRentalSubTotal(Rental rental) {
         return "\t" + rental.getMovie().getTitle() + "\t"
-                + String.valueOf(rental.getAmount()) + "\n";
+                + String.valueOf(rental.getTotalAmount()) + "\n";
     }
 
     public List<Rental> getRentalList(){
         return rentalList;
     }
 
-    public String htmlStatement() {
-        String header = "<H1>Rentals for <EM>" + getName() + "</EM></H1>";
-        String body = "";
-        int frequentRenterPoints = 0;
-        double totalAmount = 0.0;
-        for(Rental rental : rentalList) {
-            double thisAmount = 0;
-            thisAmount = rental.getAmount();
-            body += rental.getMovie().getTitle()+": " + thisAmount+"<BR>";
-            frequentRenterPoints += rental.getfrequentrentalPoints();
-            totalAmount += thisAmount;
-        }
-        String Footer = "<P>You owe <EM>"+totalAmount+
-                "</EM><P>On this rental you earned <EM>"+frequentRenterPoints+"</EM> frequent renter points<P>";
-        return header+"<P>"+body+Footer;
-    }
 }
